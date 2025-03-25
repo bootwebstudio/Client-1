@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "DIRTYLINE";
+  src: url("/fonts/DIRTYLINE.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SPACEGROTESK";
+  src: url("/fonts/SPACEGROTESK.woff2") format("woff2");
+}
