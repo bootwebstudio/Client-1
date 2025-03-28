@@ -92,7 +92,7 @@ const Home = () => {
           No more urges. No more guilt. Just a clear, focused, and powerful YOU.
         </p>
         <Link to="/form" className="w-full">
-          <Button content="I REFUSE TO BE A SLAVE — LET'S GO!" />
+          <Button content="GET THE EBOOK NOW" />
         </Link>
       </section>
 
@@ -334,7 +334,7 @@ const Home = () => {
           className="w-full"
           download="Free Resource"
         >
-          <Button content="Get the free ebook" />
+          <Button content="READ 1ST CHAPTER — FREE" />
         </a>
       </section>
 
