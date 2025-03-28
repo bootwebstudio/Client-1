@@ -334,7 +334,7 @@ const Home = () => {
           className="w-full"
           download="Free Resource"
         >
-          <Button content="READ 1ST CHAPTER — FREE" />
+          <Button content="TRY CHAPTER 1 FOR FREE" />
         </a>
       </section>
 
