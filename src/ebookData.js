@@ -28,10 +28,8 @@ const EBOOK_DATA = {
   ],
   details: [
     "Proven step-by-step strategies to break free from addiction.",
-    "Science-backed methods to control urges & build discipline.",
     "Exclusive Habit-Tracking Template to measure your progress.",
     "Mindset shifts to regain confidence, focus & energy.",
-    "Real-life success stories to inspire & keep you motivated.",
   ],
   testimonials: [
     {
