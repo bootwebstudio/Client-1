@@ -13,9 +13,11 @@ import CoursePreview from "../assets/CoursePreview.png";
 const Form = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
+  const RAZORPAY_SECRET = import.meta.env.VITE_RAZORPAY_SECRET;
   const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_DATABASE_CHAT_ID = import.meta.env
     .VITE_TELEGRAM_DATABASE_CHAT_ID;
@@ -54,23 +56,46 @@ const Form = () => {
         amount: EBOOK_PRICE * 100,
         currency: "INR",
         name: "YOUTH PHILOSOPHY",
-        description: "No Fap Guide Ebook",
+        description: "Your Favorite Poison Ebook",
         image: BrandLogo,
         handler: async (response) => {
-          await sendUSERDATA(response);
-          const inviteLink = await generateINVITELINK();
-          if (inviteLink) {
+          try {
+            await axios.post(
+              `https://api.razorpay.com/v1/payments/${response.razorpay_payment_id}/capture`,
+              {
+                amount: EBOOK_PRICE * 100,
+                currency: "INR",
+              },
+              {
+                auth: {
+                  username: RAZORPAY_KEY,
+                  password: RAZORPAY_SECRET,
+                },
+              }
+            );
+            await sendUSERDATA(response);
+            const inviteLink = await generateINVITELINK();
+            if (inviteLink) {
+              await sendEmail(inviteLink, response.razorpay_payment_id);
+              setMessageContent(
+                "Success! Check your email for the ebook link."
+              );
+              setShowMessage(true);
+              navigate("/thanks", { state: { inviteLink } });
+            } else {
+              setMessageContent(
+                "Payment successful, but we couldn't generate the link. Contact support."
+              );
+              setShowMessage(true);
+            }
+          } catch (error) {
+            console.error("Payment capture failed:", error);
             setMessageContent(
-              "Success! You have purchased this ebook. Wait for a few seconds to get the link or check your email."
+              "Payment successful, but failed to capture. Contact support."
             );
             setShowMessage(true);
-            await sendEmail(inviteLink, response.razorpay_payment_id);
-            navigate("/thanks", { state: { inviteLink } });
-          } else {
-            setMessageContent(
-              "Failure! You have not purchased this ebook. Facing any problem? Contact support team: youthphilosophy544@gmail.com"
-            );
-            setShowMessage(true);
+          } finally {
+            setLoading(false);
           }
         },
         prefill: {
@@ -82,10 +107,14 @@ const Form = () => {
           color: "#E30A03",
         },
       };
+
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
       console.error("Error initiating payment:", error);
+      setMessageContent("Error during payment. Try again.");
+      setShowMessage(true);
+      setLoading(false);
     }
   };
 
@@ -129,7 +158,7 @@ const Form = () => {
         {
           sender: { email: "pvt.suraj37@gmail.com", name: "YOUTH PHILOSOPHY" },
           to: [{ email: formData.email, name: formData.name }],
-          subject: `No Fap Ebook Guide for ${formData.name}!`,
+          subject: `Your Favorite Poison Ebook for ${formData.name}!`,
           htmlContent: `
           <p><strong>Hello ${formData.name},</strong></p>
           <p>Welcome to a life-changing experience! 🚀 You've successfully purchased, and your journey starts now.</p>
