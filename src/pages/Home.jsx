@@ -309,7 +309,7 @@ const Home = () => {
                 ₹{EBOOK_PRICE}
               </span>{" "}
               <span className="font-semibold line-through font-[SPACEGROTESK]">
-                ₹1799
+                ₹499
               </span>
             </button>
           </Link>

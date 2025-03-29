@@ -247,8 +247,8 @@ const Form = () => {
               </h2>
               <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
                 Please make your payment via UPI or other available options.
-                Kindly avoid using PhonePe and the QR code at the moment, as it's currently
-                not working.
+                Kindly avoid using PhonePe and the QR code at the moment, as
+                it's currently not working.
               </p>
               <button
                 type="button"
@@ -260,7 +260,7 @@ const Form = () => {
                   ₹{EBOOK_PRICE}
                 </span>{" "}
                 <span className="font-semibold line-through font-[SPACEGROTESK]">
-                  ₹1799
+                  ₹499
                 </span>
               </button>
             </div>
