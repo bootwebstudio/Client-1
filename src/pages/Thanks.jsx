@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // Components
 import Button from "../components/Button";
-import Message from "../components/Message";
 
 // Assets
 import CoursePreview from "../assets/CoursePreview.png";
 
 const Thanks = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const inviteLink = location.state?.inviteLink || "";
-  const [showMessage, setShowMessage] = useState(false);
 
-  const handleDownloadClick = () => {
+  const handleDOWNLOAD = () => {
     if (inviteLink.trim()) {
       window.open(inviteLink, "_blank");
     } else {
-      setShowMessage(true);
+      navigate("/");
     }
   };
 
@@ -31,30 +30,43 @@ const Thanks = () => {
           loading="lazy"
         />
       </figure>
+
       <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
         THE ULTIMATE <span className="text-[#E30A03]">NOFAP</span> GUIDE — QUIT{" "}
         <span className="text-[#E30A03]">MASTURBATION & PORN</span> FOREVER!
       </h2>
-      <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
-        Successfully ebook purchased! Click the button below or check your email
-        for the ebook link. Remember, it's a one-time link, so be careful. If
-        facing any problems, contact:
-        <br />
-        <a href="mailto:youthphilosophy544@gmail.com" className="underline">
-          youthphilosophy544@gmail.com
-        </a>
-      </p>
 
-      <button onClick={handleDownloadClick} className="w-full">
-        <Button content="Download Ebook" />
-      </button>
-
-      {showMessage && (
-        <Message
-          showMessage={showMessage}
-          setShowMessage={setShowMessage}
-          message="Oops! No download link found. Please check your email or contact support."
-        />
+      {inviteLink ? (
+        <>
+          <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+            Congratulations! You have successfully purchased the ebook. Click
+            the button below to access the exclusive ebook. Remember, it's a
+            one-time link, so be careful. If facing any problem, contact:
+            <br />
+            <br />
+            <a href="mailto:youthphilosophy544@gmail.com" className="underline">
+              youthphilosophy544@gmail.com
+            </a>
+          </p>
+          <button onClick={handleDOWNLOAD} className="w-full">
+            <Button content="JOIN PRIVATE COMMUNITY" />
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+            Looks like you don't puschased the ebook. Click the link below to
+            access the ebook, if you're facing any problem, contact:
+            <br />
+            <br />
+            <a href="mailto:youthphilosophy544@gmail.com" className="underline">
+              youthphilosophy544@gmail.com
+            </a>
+          </p>
+          <button onClick={handleDOWNLOAD} className="w-full">
+            <Button content="PURCHASE THE EBOOK" />
+          </button>
+        </>
       )}
     </div>
   );

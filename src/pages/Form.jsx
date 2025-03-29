@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // Components
-import Message from "../components/Message";
 import DropDown from "../components/DropDown";
 
 // Assets
@@ -11,13 +10,10 @@ import BrandLogo from "../assets/BrandLogo.png";
 import CoursePreview from "../assets/CoursePreview.png";
 
 const Form = () => {
-  const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
-  const RAZORPAY_SECRET = import.meta.env.VITE_RAZORPAY_SECRET;
   const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_DATABASE_CHAT_ID = import.meta.env
     .VITE_TELEGRAM_DATABASE_CHAT_ID;
@@ -34,7 +30,7 @@ const Form = () => {
   });
 
   const navigate = useNavigate();
-  const formContainerRef = useRef(null); // Ref for the black container
+  const formContainerRef = useRef(null);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -59,43 +55,15 @@ const Form = () => {
         description: "Your Favorite Poison Ebook",
         image: BrandLogo,
         handler: async (response) => {
-          try {
-            await axios.post(
-              `https://api.razorpay.com/v1/payments/${response.razorpay_payment_id}/capture`,
-              {
-                amount: EBOOK_PRICE * 100,
-                currency: "INR",
-              },
-              {
-                auth: {
-                  username: RAZORPAY_KEY,
-                  password: RAZORPAY_SECRET,
-                },
-              }
-            );
-            await sendUSERDATA(response);
-            const inviteLink = await generateINVITELINK();
-            if (inviteLink) {
-              await sendEmail(inviteLink, response.razorpay_payment_id);
-              setMessageContent(
-                "Success! Check your email for the ebook link."
-              );
-              setShowMessage(true);
-              navigate("/thanks", { state: { inviteLink } });
-            } else {
-              setMessageContent(
-                "Payment successful, but we couldn't generate the link. Contact support."
-              );
-              setShowMessage(true);
-            }
-          } catch (error) {
-            console.error("Payment capture failed:", error);
-            setMessageContent(
-              "Payment successful, but failed to capture. Contact support."
-            );
-            setShowMessage(true);
-          } finally {
-            setLoading(false);
+          await sendUSERDATA(response);
+          const inviteLink = await generateINVITELINK();
+          if (inviteLink) {
+            navigate("/thanks", { state: { inviteLink } });
+            setTimeout(() => {
+              sendEmail(inviteLink, response.razorpay_payment_id);
+            }, 1000);
+          } else {
+            return;
           }
         },
         prefill: {
@@ -107,14 +75,10 @@ const Form = () => {
           color: "#E30A03",
         },
       };
-
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
       console.error("Error initiating payment:", error);
-      setMessageContent("Error during payment. Try again.");
-      setShowMessage(true);
-      setLoading(false);
     }
   };
 
@@ -183,7 +147,7 @@ const Form = () => {
 
   return (
     <div
-      ref={formContainerRef} // Ref for the black container
+      ref={formContainerRef}
       className="w-full min-h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6 font-[SPACEGROTESK] text-white bg-black"
     >
       <figure>
@@ -237,7 +201,6 @@ const Form = () => {
           onChange={handleCHANGE}
           onToggle={(isOpen) => {
             if (formContainerRef.current) {
-              // Adjust the height of the black container
               formContainerRef.current.style.minHeight = isOpen
                 ? "120vh"
                 : "100vh";
@@ -252,7 +215,6 @@ const Form = () => {
           onChange={handleCHANGE}
           onToggle={(isOpen) => {
             if (formContainerRef.current) {
-              // Adjust the height of the black container
               formContainerRef.current.style.minHeight = isOpen
                 ? "120vh"
                 : "100vh";
@@ -272,11 +234,6 @@ const Form = () => {
           </span>
         </button>
       </form>
-      <Message
-        showMessage={showMessage}
-        setShowMessage={setShowMessage}
-        message={messageContent}
-      />
     </div>
   );
 };
