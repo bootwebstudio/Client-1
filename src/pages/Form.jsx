@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // Components
+import Button from "../components/Button";
 import DropDown from "../components/DropDown";
 
 // Assets
@@ -10,6 +11,7 @@ import BrandLogo from "../assets/BrandLogo.png";
 import CoursePreview from "../assets/CoursePreview.png";
 
 const Form = () => {
+  const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState("");
 
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
@@ -43,14 +45,25 @@ const Form = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePAYMENT = async (e) => {
+  const handleFORM = async (e) => {
     e.preventDefault();
+    setShowMessage(true);
+  };
+
+  const handlePAYMENT = async () => {
+    setShowMessage(false);
 
     try {
       const options = {
         key: RAZORPAY_KEY,
         amount: EBOOK_PRICE * 100,
         currency: "INR",
+        capture: "automatic",
+        capture_options: {
+          automatic_expiry_period: 12,
+          manual_expiry_period: 7200,
+          refund_speed: "optimum",
+        },
         name: "YOUTH PHILOSOPHY",
         description: "Your Favorite Poison Ebook",
         image: BrandLogo,
@@ -62,8 +75,6 @@ const Form = () => {
             setTimeout(() => {
               sendEmail(inviteLink, response.razorpay_payment_id);
             }, 1000);
-          } else {
-            return;
           }
         },
         prefill: {
@@ -75,6 +86,7 @@ const Form = () => {
           color: "#E30A03",
         },
       };
+
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
@@ -162,7 +174,7 @@ const Form = () => {
         THE ULTIMATE <span className="text-[#E30A03]">NOFAP</span> GUIDE — QUIT{" "}
         <span className="text-[#E30A03]">MASTURBATION & PORN</span> FOREVER!
       </h2>
-      <form onSubmit={handlePAYMENT} className="w-full flex flex-col gap-6">
+      <form onSubmit={handleFORM} className="w-full flex flex-col gap-6">
         <input
           type="text"
           name="name"
@@ -225,14 +237,35 @@ const Form = () => {
           type="submit"
           className="w-full p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
         >
-          Get the Ebook at{" "}
-          <span className="font-semibold font-[SPACEGROTESK]">
-            ₹{EBOOK_PRICE}
-          </span>{" "}
-          <span className="font-semibold line-through font-[SPACEGROTESK]">
-            ₹1799
-          </span>
+          PROCEED TO PAYMENT
         </button>
+        {showMessage && (
+          <div className="w-screen h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex items-center justify-center top-0 left-0 fixed font-[SPACEGROTESK] text-white bg-black/60">
+            <div className="w-full p-6 flex gap-4 flex-col rounded bg-zinc-800">
+              <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
+                IMPORTANT
+              </h2>
+              <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+                Please make your payment via UPI or other available options.
+                Kindly avoid using PhonePe and the QR code at the moment, as it's currently
+                not working.
+              </p>
+              <button
+                type="button"
+                className="w-full mt-2 p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
+                onClick={handlePAYMENT}
+              >
+                Get the Ebook at{" "}
+                <span className="font-semibold font-[SPACEGROTESK]">
+                  ₹{EBOOK_PRICE}
+                </span>{" "}
+                <span className="font-semibold line-through font-[SPACEGROTESK]">
+                  ₹1799
+                </span>
+              </button>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );
