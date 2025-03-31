@@ -11,7 +11,7 @@ import Button from "../components/Button";
 
 // Assets
 import Quotation from "../assets/Quotation.svg";
-import EbookCover from "../assets/EbookCover2.png";
+import EbookCover from "../assets/EbookCover.png";
 import CoursePreview from "../assets/CoursePreview.png";
 
 const Home = () => {
