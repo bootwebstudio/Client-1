@@ -31,14 +31,14 @@ const Thanks = () => {
         />
       </figure>
 
-      <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
+      <h2 className="text-4xl lg:text-5xl leading-tight lowercase text-center font-[DIRTYLINE]">
         THE ULTIMATE <span className="text-[#E30A03]">NOFAP</span> GUIDE — QUIT{" "}
         <span className="text-[#E30A03]">MASTURBATION & PORN</span> FOREVER!
       </h2>
 
       {inviteLink ? (
         <>
-          <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+          <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
             Congratulations! You have successfully purchased the ebook. Click
             the button below to access the exclusive ebook. Remember, it's a
             one-time link, so be careful. If facing any problem, contact:
@@ -54,7 +54,7 @@ const Thanks = () => {
         </>
       ) : (
         <>
-          <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+          <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
             Looks like you don't puschased the ebook. Click the link below to
             access the ebook, if you're facing any problem, contact:
             <br />

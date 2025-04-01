@@ -41,7 +41,7 @@ const DropDown = ({ label, name, options, value, onChange, onToggle }) => {
               onClick={() => {
                 onChange({ target: { name, value: option } });
                 setIsOpen(false);
-                onToggle(false); // Notify parent to reset height
+                onToggle(false); 
               }}
             >
               {option}

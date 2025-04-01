@@ -1,12 +1,12 @@
 import React from "react";
-import EBOOK_DATA from "../ebookData";
 import { useState } from "react";
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { MessageSquareMore } from "lucide-react";
+import EBOOK_DATA from "../ebookData";
 
 // Components
+import FAQs from "../components/FAQs";
 import Button from "../components/Button";
 
 // Assets
@@ -17,12 +17,6 @@ import CoursePreview from "../assets/CoursePreview.png";
 const Home = () => {
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
-
-  const [OPEN_INDEX, SET_OPEN_INDEX] = useState(null);
-
-  const TOGGLE_FAQ = (index) => {
-    SET_OPEN_INDEX(OPEN_INDEX === index ? null : index);
-  };
 
   const GET_TIME_REMAINING = (endTime) => {
     const TOTAL = Date.parse(endTime) - Date.now();
@@ -67,9 +61,16 @@ const Home = () => {
   ];
 
   return (
-    <div className="w-full h-full font-[SPACEGROTESK] text-white bg-black">
+    <div className="w-full h-full relative font-[SPACEGROTESK] text-white bg-black">
+      {/* SUPPORT */}
+      <Link to="/support" className="w-full">
+        <div className="p-4 text-lg rounded-full fixed bottom-6 right-6 xl:bottom-12 xl:right-12 cursor-pointer bg-[#E30A03]">
+          <MessageSquareMore />
+        </div>
+      </Link>
+
       {/* HERO */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <figure>
           <img
             src={CoursePreview}
@@ -83,12 +84,12 @@ const Home = () => {
           <span className="text-[#E30A03]">CYCLE</span> OF{" "}
           <span className="text-[#E30A03]">MASTURBATION & PORN</span> ADDICTION?
         </h2>
-        <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+        <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
           This isn't just another self-help e-book. This is your ultimate
           step-by-step guide to reclaiming your self-control, building
           unstoppable willpower, and transforming your life.
         </p>
-        <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+        <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
           No more urges. No more guilt. Just a clear, focused, and powerful YOU.
         </p>
         <Link to="/form" className="w-full">
@@ -97,17 +98,17 @@ const Home = () => {
       </section>
 
       {/* WHY THIS EBOOK? */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           WHY THIS <span className="text-[#E30A03]">EBOOK?</span>
         </h2>
 
-        <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+        <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
           This ebook is written by <strong>Suraj Yadav</strong>, the creator of
           the YouTube channel <strong>Youth Philosophy.</strong>
         </p>
 
-        <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+        <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
           He was trapped in this cycle for <strong>8 years</strong>, struggling
           to break free. After deep research, personal experiments, and
           self-observation, he finally escaped this addiction. Now, he's sharing
@@ -117,7 +118,7 @@ const Home = () => {
       </section>
 
       {/* CHAPTERS */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           WHAT YOU'LL <span className="text-[#E30A03]">LEARN?</span>
         </h2>
@@ -135,7 +136,7 @@ const Home = () => {
           {EBOOK_DATA.features.map((feature, index) => (
             <li
               key={index}
-              className="text-lg lg:text-xl leading-none lg:leading-normal"
+              className="text-lg lg:text-xl leading-tight lg:leading-normal"
             >
               <span className="">
                 📖 <strong>{feature.title}:</strong> {feature.description}
@@ -144,14 +145,14 @@ const Home = () => {
           ))}
         </ul>
 
-        <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
+        <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
           Each chapter includes homework assignments to help you apply what you
           learn and make lasting changes.
         </p>
       </section>
 
       {/* EBOOK */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           GRAB THE <span className="text-[#E30A03]">EBOOK</span>
         </h2>
@@ -167,14 +168,14 @@ const Home = () => {
           </figure>
           {/* Content */}
           <div className="p-6 flex flex-col gap-6">
-            <h3 className="text-2xl lg:text-3xl leading-none text-center lowercase font-[DIRTYLINE]">
+            <h3 className="text-2xl lg:text-3xl leading-tight text-center lowercase font-[DIRTYLINE]">
               The Ultimate NoFap Guide — Quit Masturbation & Porn Forever!
             </h3>
             <ul className="flex flex-col gap-6">
               {EBOOK_DATA.details.map((detail, index) => (
                 <li
                   key={index}
-                  className="text-lg lg:text-xl leading-none lg:leading-normal flex items-start"
+                  className="text-lg lg:text-xl leading-tight lg:leading-normal flex items-start"
                 >
                   <span className="mr-2">✅</span>
                   <span>{detail}</span>
@@ -189,7 +190,7 @@ const Home = () => {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           REAL <span className="text-[#E30A03]">STORIES</span>
         </h2>
@@ -204,10 +205,10 @@ const Home = () => {
 
             {/* Testimonial Content */}
             <div className="w-full flex flex-col gap-4">
-              <p className="text-lg lg:text-xl leading-none lg:leading-normal">
+              <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
                 {testimonial.content}
               </p>
-              <cite className="text-lg lg:text-xl leading-none lg:leading-normal">
+              <cite className="text-lg lg:text-xl leading-tight lg:leading-normal">
                 — {testimonial.name}
               </cite>
             </div>
@@ -216,51 +217,21 @@ const Home = () => {
       </section>
 
       {/* FAQs */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           MOST <span className="text-[#E30A03]">FAQs</span>
         </h2>
         <div className="w-full flex flex-col gap-6">
-          {EBOOK_DATA.faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="w-full p-6 rounded text-lg lg:text-xl leading-none lg:leading-normal bg-[#1A1A1A]"
-              onClick={() => TOGGLE_FAQ(index)}
-            >
-              {/* Question Section */}
-              <div className="flex items-center">
-                <h4 className="w-full">{faq.question}</h4>
-                {OPEN_INDEX === index ? (
-                  <ChevronUp size={20} />
-                ) : (
-                  <ChevronDown size={20} />
-                )}
-              </div>
-
-              {/* Answer Section */}
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={
-                  OPEN_INDEX === index
-                    ? { height: "auto", opacity: 1 }
-                    : { height: 0, opacity: 0 }
-                }
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                className="overflow-hidden"
-              >
-                <p className="mt-6 ">{faq.answer}</p>
-              </motion.div>
-            </div>
-          ))}
+          <FAQs Data={EBOOK_DATA.faqs} />
         </div>
       </section>
 
       {/* WHO I AM? */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           WHO <span className="text-[#E30A03]">I AM?</span>
         </h2>
-        <div className="flex flex-col text-lg lg:text-xl text-center leading-none lg:leading-normal gap-6">
+        <div className="flex flex-col text-lg lg:text-xl text-center leading-tight lg:leading-normal gap-6">
           <p>
             I'm Suraj Yadav, the creator of <strong>Youth Philosophy</strong>, a
             YouTube channel dedicated to helping the youth break free from bad
@@ -276,7 +247,7 @@ const Home = () => {
       </section>
 
       {/* CTA */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           GRAB THE <span className="text-[#E30A03]">DEAL</span>
         </h2>
@@ -293,7 +264,7 @@ const Home = () => {
             {EBOOK_CTA.map((cta, index) => (
               <div
                 key={index}
-                className="w-full text-2xl lg:text-3xl leading-none lowercase flex gap-6 flex-col items-center"
+                className="w-full text-2xl lg:text-3xl leading-tight lowercase flex gap-6 flex-col items-center"
               >
                 <div className="w-full p-6 sm:p-8 px-0 text-center font-bold rounded text-[#1A1A1A] bg-white">
                   {cta.value}
@@ -317,7 +288,7 @@ const Home = () => {
       </section>
 
       {/* FREE RESOURCE */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           FREE <span className="text-[#E30A03]">RESOURCE</span>
         </h2>
@@ -339,8 +310,8 @@ const Home = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex flex-col items-center gap-6">
-        <h4 className="w-full p-4 px-0 lg:text-lg leading-none text-center uppercase border-t-2 border-white">
+      <footer className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+        <h4 className="w-full p-4 px-0 lg:text-lg leading-tight text-center uppercase border-t-2 border-white">
           © {new Date().getFullYear()} Youth Philosophy. All Rights Reserved.
         </h4>
       </footer>
