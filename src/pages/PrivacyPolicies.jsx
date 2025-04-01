@@ -10,8 +10,8 @@ const PrivacyPolicies = () => {
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
           1. Information We Collect
         </h4>
-        <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
-          We collect the following details from our users:
+        <div className="text-lg lg:text-xl leading-tight lg:leading-normal">
+          <p>We collect the following details from our users:</p>
           <ul>
             <li className="mx-6 list-disc">
               <b>Personal Information:</b> Name, email, phone number, and age.
@@ -24,13 +24,13 @@ const PrivacyPolicies = () => {
               <b>Payment Information:</b> Payment ID for order verification.
             </li>
           </ul>
-        </p>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
           2. Why We Collect This Data?
         </h4>
-        <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
+        <div className="text-lg lg:text-xl leading-tight lg:leading-normal">
           <ul>
             <li className="mx-6 list-disc">
               To verify payments and grant access if any issue occurs.
@@ -42,14 +42,16 @@ const PrivacyPolicies = () => {
               To analyze marketing performance through referral tracking.
             </li>
           </ul>
-        </p>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
           3. Third-Party Services We Use
         </h4>
-        <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
-          We use the following third-party services to operate our business:
+        <div className="text-lg lg:text-xl leading-tight lg:leading-normal">
+          <p>
+            We use the following third-party services to operate our business:
+          </p>
           <ul>
             <li className="mx-6 list-disc">
               <b>Razorpay:</b> Secure payment processing.
@@ -61,13 +63,13 @@ const PrivacyPolicies = () => {
               <b>Brevo:</b> Sending confirmation emails with product access.
             </li>
           </ul>
-        </p>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
           4. Data Storage & Security
         </h4>
-        <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
+        <div className="text-lg lg:text-xl leading-tight lg:leading-normal">
           <ul>
             <li className="mx-6 list-disc">
               We store user data indefinitely to ensure continued access
@@ -77,7 +79,7 @@ const PrivacyPolicies = () => {
               We do not sell or share personal data with third parties.
             </li>
           </ul>
-        </p>
+        </div>
       </div>
     </div>
   );

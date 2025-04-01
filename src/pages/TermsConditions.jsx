@@ -12,7 +12,7 @@ const TermsConditions = () => {
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
           1. Product & Usage Rules
         </h4>
-        <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
+        <div className="text-lg lg:text-xl leading-tight lg:leading-normal">
           <ul>
             <li className="mx-6 list-disc">
               Our product is a digital ebook on quitting porn addiction.
@@ -26,7 +26,7 @@ const TermsConditions = () => {
               allowed to share, distribute, or resell the ebook or access link.
             </li>
           </ul>
-        </p>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
@@ -41,7 +41,7 @@ const TermsConditions = () => {
         <h4 className="text-2xl lg:text-3xl leading-tight uppercase font-bold">
           3. Pricing & Discounts
         </h4>
-        <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
+        <div className="text-lg lg:text-xl leading-tight lg:leading-normal">
           <ul>
             <li className="mx-6 list-disc">
               The actual price of the ebook is ₹499.
@@ -53,7 +53,7 @@ const TermsConditions = () => {
               Prices may change in the future based on promotions.
             </li>
           </ul>
-        </p>
+        </div>
       </div>
     </div>
   );
