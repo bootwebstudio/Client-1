@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { MessageSquareMore } from "lucide-react";
 import EBOOK_DATA from "../ebookData";
 
@@ -63,7 +64,7 @@ const Home = () => {
   return (
     <div className="w-full h-full relative font-[SPACEGROTESK] text-white bg-black">
       {/* SUPPORT */}
-      <Link to="/support" className="w-full">
+      <Link to="/support" state={{ from: location.pathname }}>
         <div className="p-4 text-lg rounded-full fixed bottom-6 right-6 xl:bottom-12 xl:right-12 cursor-pointer bg-[#E30A03]">
           <MessageSquareMore />
         </div>

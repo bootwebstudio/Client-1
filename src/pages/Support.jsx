@@ -1,6 +1,6 @@
 import React from "react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { MessageSquareOff } from "lucide-react";
 import EBOOK_DATA from "../ebookData";
 
@@ -9,9 +9,12 @@ import FAQs from "../components/FAQs";
 import Button from "../components/Button";
 
 const Support = () => {
+  const location = useLocation();
+  const returnPath = location.state?.from || "/";
+
   return (
     <div className="w-full font-[SPACEGROTESK] text-white bg-black">
-      <Link to="/" className="w-full">
+      <Link to={returnPath}>
         <div className="p-4 text-lg rounded-full fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] cursor-pointer">
           <MessageSquareOff />
         </div>
@@ -22,7 +25,14 @@ const Support = () => {
           HELP & SUPPORT
         </h2>
         <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
-          If you're facing any issue related to ebook, feel free to contact us.
+          Click{" "}
+          <Link to="/thanks">
+            <strong className="underline">JOIN NOW</strong>
+          </Link>{" "}
+          if you already purchased the e-book but don't receive the link.
+        </p>
+        <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
+          If you're facing any issue related to e-book, feel free to contact us.
           We're here to help you and resolve your problems, usually we reply
           within 24 hours.
         </p>

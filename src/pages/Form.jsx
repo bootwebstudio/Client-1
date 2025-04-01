@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import axios from "axios";
+import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Components
-import Button from "../components/Button";
 import DropDown from "../components/DropDown";
 
 // Assets
@@ -12,7 +14,6 @@ import CoursePreview from "../assets/CoursePreview.png";
 
 const Form = () => {
   const [showMessage, setShowMessage] = useState(false);
-  const [messageContent, setMessageContent] = useState("");
 
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
@@ -170,7 +171,7 @@ const Form = () => {
           loading="lazy"
         />
       </figure>
-      <h2 className="text-4xl lg:text-5xl leading-tight lowercase text-center font-[DIRTYLINE]">
+      <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
         THE ULTIMATE <span className="text-[#E30A03]">NOFAP</span> GUIDE — QUIT{" "}
         <span className="text-[#E30A03]">MASTURBATION & PORN</span> FOREVER!
       </h2>
@@ -242,10 +243,10 @@ const Form = () => {
         {showMessage && (
           <div className="w-screen h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex items-center justify-center top-0 left-0 fixed font-[SPACEGROTESK] text-white bg-black/60">
             <div className="w-full p-6 flex gap-4 flex-col rounded bg-zinc-800">
-              <h2 className="text-4xl lg:text-5xl leading-tight lowercase text-center font-[DIRTYLINE]">
+              <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
                 IMPORTANT
               </h2>
-              <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
+              <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
                 Please make your payment via UPI or other available options.
                 Kindly avoid using PhonePe and the QR code at the moment, as
                 it's currently not working.
