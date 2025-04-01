@@ -20,7 +20,7 @@ const Support = () => {
         </div>
       </Link>
 
-      <div className="pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <div className="pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-tight lowercase text-center font-[DIRTYLINE]">
           HELP & SUPPORT
         </h2>
@@ -29,10 +29,10 @@ const Support = () => {
           <Link to="/thanks">
             <strong className="underline">JOIN NOW</strong>
           </Link>{" "}
-          if you already purchased the e-book but don't receive the link.
+          if you already purchased the ebook but don't receive the link.
         </p>
         <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
-          If you're facing any issue related to e-book, feel free to contact us.
+          If you're facing any issue related to ebook, feel free to contact us.
           We're here to help you and resolve your problems, usually we reply
           within 24 hours.
         </p>
@@ -53,7 +53,7 @@ const Support = () => {
         </a>
       </div>
 
-      <div className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <div className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-tight lowercase text-center font-[DIRTYLINE]">
           MOST <span className="text-[#E30A03]">FAQs</span>
         </h2>
@@ -62,7 +62,7 @@ const Support = () => {
         </div>
       </div>
 
-      <footer className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <footer className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h4 className="w-full p-4 px-0 lg:text-lg leading-tight text-center uppercase border-t-2 border-white">
           © {new Date().getFullYear()} Youth Philosophy. All Rights Reserved.
         </h4>

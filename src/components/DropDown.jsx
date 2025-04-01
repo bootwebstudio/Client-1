@@ -1,5 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import React from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const DropDown = ({ label, name, options, value, onChange, onToggle }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +13,7 @@ const DropDown = ({ label, name, options, value, onChange, onToggle }) => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
-        onToggle(false); // Notify parent to reset height
+        onToggle(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -18,7 +22,7 @@ const DropDown = ({ label, name, options, value, onChange, onToggle }) => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-    onToggle(!isOpen); // Notify parent to adjust height
+    onToggle(!isOpen);
   };
 
   return (
@@ -41,7 +45,7 @@ const DropDown = ({ label, name, options, value, onChange, onToggle }) => {
               onClick={() => {
                 onChange({ target: { name, value: option } });
                 setIsOpen(false);
-                onToggle(false); 
+                onToggle(false);
               }}
             >
               {option}

@@ -72,6 +72,7 @@ const Form = () => {
           await sendUSERDATA(response);
           const inviteLink = await generateINVITELINK();
           if (inviteLink) {
+            localStorage.setItem("inviteLink", inviteLink);
             navigate("/thanks", { state: { inviteLink } });
             setTimeout(() => {
               sendEmail(inviteLink, response.razorpay_payment_id);

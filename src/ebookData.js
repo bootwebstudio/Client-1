@@ -100,28 +100,6 @@ const EBOOK_DATA = {
         "Sometime it happens due to some technical issues! But don't panic, contact us through the website support button or through email.",
     },
   ],
-  support: [
-    {
-      question: "I paid but didn't get the link. What now?",
-      answer:
-        "Check spam email and wait for 5 minutes. Still no link, don't panic? Contact support we'll reply within 24 hours and resolve your issue.",
-    },
-    {
-      question: "I entered the wrong email. How do I get my e-book?",
-      answer:
-        "Contact support with your payment receipt. We'll update your email and resend the link.",
-    },
-    {
-      question: "The download link is broken/expired. What to do?",
-      answer:
-        "Reach out to support, we'll reply within 24 hourss and we'll send a new link.",
-    },
-    {
-      question: "My payment failed. What should I do?",
-      answer:
-        "Check card details, ensure your bank allows the transaction, or try another method.",
-    },
-  ],
 };
 
 export default EBOOK_DATA;

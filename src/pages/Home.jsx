@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { MessageSquareMore } from "lucide-react";
 import EBOOK_DATA from "../ebookData";
+
+// Icons
+import { Mail } from "lucide-react";
+import { BookOpenText } from "lucide-react";
 
 // Components
 import FAQs from "../components/FAQs";
@@ -64,14 +66,14 @@ const Home = () => {
   return (
     <div className="w-full h-full relative font-[SPACEGROTESK] text-white bg-black">
       {/* SUPPORT */}
-      <Link to="/support" state={{ from: location.pathname }}>
+      <Link to="/thanks">
         <div className="p-4 text-lg rounded-full fixed bottom-6 right-6 xl:bottom-12 xl:right-12 cursor-pointer bg-[#E30A03]">
-          <MessageSquareMore />
+          <BookOpenText />
         </div>
       </Link>
 
       {/* HERO */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <figure>
           <img
             src={CoursePreview}
@@ -86,7 +88,7 @@ const Home = () => {
           <span className="text-[#E30A03]">MASTURBATION & PORN</span> ADDICTION?
         </h2>
         <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
-          This isn't just another self-help e-book. This is your ultimate
+          This isn't just another self-help ebook. This is your ultimate
           step-by-step guide to reclaiming your self-control, building
           unstoppable willpower, and transforming your life.
         </p>
@@ -99,7 +101,7 @@ const Home = () => {
       </section>
 
       {/* WHY THIS EBOOK? */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           WHY THIS <span className="text-[#E30A03]">EBOOK?</span>
         </h2>
@@ -119,7 +121,7 @@ const Home = () => {
       </section>
 
       {/* CHAPTERS */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           WHAT YOU'LL <span className="text-[#E30A03]">LEARN?</span>
         </h2>
@@ -153,7 +155,7 @@ const Home = () => {
       </section>
 
       {/* EBOOK */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           GRAB THE <span className="text-[#E30A03]">EBOOK</span>
         </h2>
@@ -191,7 +193,7 @@ const Home = () => {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           REAL <span className="text-[#E30A03]">STORIES</span>
         </h2>
@@ -218,7 +220,7 @@ const Home = () => {
       </section>
 
       {/* FAQs */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           MOST <span className="text-[#E30A03]">FAQs</span>
         </h2>
@@ -228,7 +230,7 @@ const Home = () => {
       </section>
 
       {/* WHO I AM? */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           WHO <span className="text-[#E30A03]">I AM?</span>
         </h2>
@@ -248,7 +250,7 @@ const Home = () => {
       </section>
 
       {/* CTA */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           GRAB THE <span className="text-[#E30A03]">DEAL</span>
         </h2>
@@ -289,7 +291,7 @@ const Home = () => {
       </section>
 
       {/* FREE RESOURCE */}
-      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           FREE <span className="text-[#E30A03]">RESOURCE</span>
         </h2>
@@ -311,7 +313,35 @@ const Home = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-96 flex flex-col items-center gap-6">
+      <footer className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-4">
+        <div className="w-full pt-4 px-0 lg:text-lg leading-tight uppercase border-t-2 border-white flex flex-col gap-4">
+          {/* CONTACT */}
+          <div className="w-full flex flex-col items-center">
+            <h4 className="pb-2 text-lg lg:text-xl leading-tight uppercase font-bold">
+              CONTACT US
+            </h4>
+            <div className="flex items-center gap-2">
+              <Mail size={20} />
+              <a
+                href="mailto:youthphilosophy544@gmail.com"
+                className="text-lg lg:text-xl lowercase"
+              >
+                youthphilosophy544@gmail.com
+              </a>
+            </div>
+          </div>
+          {/* SOCIAL LINKS */}
+          <div className="w-full flex flex-col items-center">
+            <h4 className="pb-2 text-lg lg:text-xl leading-tight uppercase font-bold">
+              COMPANY
+            </h4>
+            <Link to="/help-support">Help & Support</Link>
+            <Link to="/privacy-policies">Privacy Policies</Link>
+            <Link to="/terms-conditions">Terms & Conditions</Link>
+            <Link to="/refund-policy">Refund Policy</Link>
+            <Link to="/shipping-policy">Shipping Policy</Link>
+          </div>
+        </div>
         <h4 className="w-full p-4 px-0 lg:text-lg leading-tight text-center uppercase border-t-2 border-white">
           © {new Date().getFullYear()} Youth Philosophy. All Rights Reserved.
         </h4>
