@@ -33,6 +33,11 @@ const EBOOK_DATA = {
   ],
   testimonials: [
     {
+      name: "Amit Pareek",
+      content:
+        "It's incredibly insightful and true! It gave me a clear vision of what I need to do next...",
+    },
+    {
       name: "Rahul Mehta",
       content:
         "Life-Changing! I struggled for years, but this ebook gave me the exact roadmap I needed...",

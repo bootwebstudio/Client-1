@@ -6,7 +6,7 @@ import Button from "../components/Button";
 
 const HelpSupport = () => {
   return (
-    <div className="w-full min-h-screen pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6 font-[SPACEGROTESK] text-white bg-black">
+    <div className="w-full min-h-screen pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col gap-6 font-[SPACEGROTESK] text-white bg-black">
       <h2 className="text-4xl lg:text-5xl leading-tight lowercase text-center font-[DIRTYLINE]">
         HELP & SUPPORT
       </h2>
@@ -28,6 +28,15 @@ const HelpSupport = () => {
         Please be patient and avoid unnecessary stress—we assure you that your
         issue will be resolved promptly.
       </p>
+
+      <p className="text-lg lg:text-xl leading-tight lg:leading-normal">
+        <strong>Business Address:</strong>
+        <br />
+        292, Mhow Goan,
+        <br />
+        Madhya Pradesh - 453441, India
+      </p>
+
       <a
         href="mailto:youthphilosophy544@gmail.com"
         target="_blank"
