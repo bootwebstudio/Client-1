@@ -25,12 +25,12 @@ const Home = () => {
 
   useEffect(() => {
     const showTimer = setTimeout(() => {
-      SET_EXPANDED(true); // Expand after 5 seconds
-    }, 3000);
+      SET_EXPANDED(true);
+    }, 5000);
 
     const hideTimer = setTimeout(() => {
-      SET_EXPANDED(false); // Collapse after 8 seconds total
-    }, 5000);
+      SET_EXPANDED(false);
+    }, 8000);
 
     return () => {
       clearTimeout(showTimer);
