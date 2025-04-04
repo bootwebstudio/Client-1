@@ -28,9 +28,7 @@ const EBOOK_DATA = {
   ],
   details: [
     "Straightforward advice from real experience—not recycled internet gyaan.",
-    "Things no one talks about openly. This book says what others won't.",
     "Written in simple language, yet deeply impactful—perfect for students and young adults.",
-    "New chapters will be added as deeper insights unfold over time.",
     "Not just motivation—practical steps to actually change your life",
     "This isn't entertainment. It's transformation.",
   ],
