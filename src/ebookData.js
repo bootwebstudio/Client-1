@@ -27,9 +27,12 @@ const EBOOK_DATA = {
     },
   ],
   details: [
-    "Proven step-by-step strategies to break free from addiction.",
-    "Exclusive Habit-Tracking Template to measure your progress.",
-    "Mindset shifts to regain confidence, focus & energy.",
+    "Straightforward advice from real experience—not recycled internet gyaan.",
+    "Things no one talks about openly. This book says what others won't.",
+    "Written in simple language, yet deeply impactful—perfect for students and young adults.",
+    "New chapters will be added as deeper insights unfold over time.",
+    "Not just motivation—practical steps to actually change your life",
+    "This isn't entertainment. It's transformation.",
   ],
   testimonials: [
     {
