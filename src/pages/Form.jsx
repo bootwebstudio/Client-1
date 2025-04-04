@@ -134,7 +134,10 @@ const Form = () => {
       await axios.post(
         "https://api.brevo.com/v3/smtp/email",
         {
-          sender: { email: "pvt.suraj37@gmail.com", name: "YOUTH PHILOSOPHY" },
+          sender: {
+            email: "youthphilosophy544@gmail.com",
+            name: "YOUTH PHILOSOPHY",
+          },
           to: [{ email: formData.email, name: formData.name }],
           subject: `Your Favorite Poison Ebook for ${formData.name}!`,
           htmlContent: `
