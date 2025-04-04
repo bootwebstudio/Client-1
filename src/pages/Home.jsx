@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+
 import EBOOK_DATA from "../ebookData";
 
 // Icons
@@ -18,6 +19,9 @@ import EbookCover from "../assets/EbookCover.png";
 import CoursePreview from "../assets/CoursePreview.png";
 
 const Home = () => {
+  const inviteLink =
+    location.state?.inviteLink || localStorage.getItem("inviteLink") || "";
+
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
 
@@ -82,22 +86,27 @@ const Home = () => {
 
   return (
     <div className="w-full h-full relative font-[SPACEGROTESK] text-white bg-black">
-      <Link to="/thanks">
-        <div className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden">
-          <BookOpenText size="28px" />
-          <span
-            className={`text-lg font-medium whitespace-nowrap transform transition-all duration-1000 ease-in-out 
+      {/* EBOOK ACCESS */}
+      {inviteLink ? (
+        <Link to="/thanks">
+          <div className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden">
+            <BookOpenText size="28px" />
+            <span
+              className={`text-lg font-medium whitespace-nowrap transform transition-all duration-1000 ease-in-out 
           ${
             EXPANDED
               ? "opacity-100 translate-x-0 max-w-xs ml-3"
               : "opacity-0 -translate-x-2 max-w-0 overflow-hidden"
           }
         `}
-          >
-            Get the ebook access!
-          </span>
-        </div>
-      </Link>
+            >
+              Here is the ebook link!
+            </span>
+          </div>
+        </Link>
+      ) : (
+        ""
+      )}
 
       {/* HERO */}
       <section className="w-full pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col items-center gap-6">
