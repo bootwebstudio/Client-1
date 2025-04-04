@@ -21,6 +21,23 @@ const Home = () => {
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
 
+  const [EXPANDED, SET_EXPANDED] = useState(false);
+
+  useEffect(() => {
+    const showTimer = setTimeout(() => {
+      SET_EXPANDED(true); // Expand after 5 seconds
+    }, 3000);
+
+    const hideTimer = setTimeout(() => {
+      SET_EXPANDED(false); // Collapse after 8 seconds total
+    }, 5000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, []);
+
   const GET_TIME_REMAINING = (endTime) => {
     const TOTAL = Date.parse(endTime) - Date.now();
     const SECONDS = Math.floor((TOTAL / 1000) % 60);
@@ -65,10 +82,20 @@ const Home = () => {
 
   return (
     <div className="w-full h-full relative font-[SPACEGROTESK] text-white bg-black">
-      {/* SUPPORT */}
       <Link to="/thanks">
-        <div className="p-4 text-lg rounded-full fixed bottom-6 right-6 xl:bottom-12 xl:right-12 cursor-pointer bg-[#E30A03]">
-          <BookOpenText />
+        <div className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden">
+          <BookOpenText size="28px" />
+          <span
+            className={`text-lg font-medium whitespace-nowrap transform transition-all duration-1000 ease-in-out 
+          ${
+            EXPANDED
+              ? "opacity-100 translate-x-0 max-w-xs ml-3"
+              : "opacity-0 -translate-x-2 max-w-0 overflow-hidden"
+          }
+        `}
+          >
+            Get the ebook access!
+          </span>
         </div>
       </Link>
 

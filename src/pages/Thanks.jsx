@@ -44,7 +44,7 @@ const Thanks = () => {
             You have successfully purchased the ebook. Remember, it's a one-time
             link, so be careful. If you're facing any problem, contact us.
           </p>
-          <Button content="JOIN PRIVATE COMMUNITY" onClick={handleDOWNLOAD} />
+          <Button content="GET THE EBOOK" onClick={handleDOWNLOAD} />
         </>
       ) : (
         <>

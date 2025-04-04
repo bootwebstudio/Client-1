@@ -251,9 +251,8 @@ const Form = () => {
                 IMPORTANT
               </h2>
               <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
-                Please make your payment via UPI or other available options.
-                Kindly avoid using PhonePe and the QR code at the moment, as
-                it's currently not working.
+                After payment, you'll be redirected to the website. The ebook
+                link will be there—just wait a few seconds.
               </p>
               <button
                 type="button"
