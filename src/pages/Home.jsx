@@ -379,7 +379,15 @@ const Home = () => {
           </div>
         </div>
         <h4 className="w-full p-4 px-0 lg:text-lg leading-tight text-center uppercase border-t-2 border-white">
-          © {new Date().getFullYear()} Youth Philosophy. All Rights Reserved.
+          Designed by{" "}
+          <a
+            href="https://bootwebstudio.github.io/Portfolio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            Bootweb Studio
+          </a>
         </h4>
       </footer>
     </div>
