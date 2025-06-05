@@ -179,7 +179,7 @@ const Home = () => {
     };
 
     const interval = setInterval(() => {
-      const randomTime = Math.floor(Math.random() * 15000) + 5000;
+      const randomTime = Math.floor(Math.random() * 5000) + 5000;
 
       const timeout = setTimeout(() => {
         decreaseCount();
@@ -229,7 +229,7 @@ const Home = () => {
         <Link to="/thanks">
           <div
             onClick={toggleShortcut}
-            className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden"
+            className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden z-50"
           >
             <BookOpenText size="28px" />
             <span
@@ -248,7 +248,7 @@ const Home = () => {
       ) : (
         <div
           onClick={toggleShortcut}
-          className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden"
+          className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden z-50"
         >
           <BadgePercent size="28px" />
           <span
