@@ -93,12 +93,12 @@ const Home = () => {
     const lastUpdate =
       parseInt(localStorage.getItem("lastDecreaseTime")) || now;
 
-    const hoursPassed = (now - lastUpdate) / (1000);
+    const hoursPassed = (now - lastUpdate) / (1000 * 60 * 60);
 
     let newCount = savedCount;
 
     if (hoursPassed >= 1) {
-      const decreaseBy = Math.floor(Math.random() * 10) + 1;
+      const decreaseBy = Math.floor(Math.random() * 5) + 1;
       newCount = Math.max(savedCount - decreaseBy, MIN_EBOOKS);
       localStorage.setItem("ebookCount", newCount.toString());
       localStorage.setItem("lastDecreaseTime", now.toString());
