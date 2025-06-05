@@ -1,8 +1,8 @@
-import React from "react";
 import axios from "axios";
 import { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 // Components
@@ -13,9 +13,17 @@ import BrandLogo from "../assets/BrandLogo.png";
 import CoursePreview from "../assets/CoursePreview.png";
 
 const Form = () => {
+  const location = useLocation();
+  const ebookPrice = location.state?.ebookPrice;
   const [showMessage, setShowMessage] = useState(false);
+  const [messageContent, setMessageContent] = useState({
+    title: "IMPORTANT",
+    body: "After payment, you'll be redirected to the website. The ebook link will be there—just wait a few seconds.",
+    isError: false,
+  });
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
-  const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
+  const EBOOK_PRICE = ebookPrice || import.meta.env.VITE_EBOOK_PRICE;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
   const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_DATABASE_CHAT_ID = import.meta.env
@@ -39,7 +47,27 @@ const Form = () => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
+
+    script.onload = () => {
+      setRazorpayLoaded(true);
+    };
+
+    script.onerror = () => {
+      console.error("Failed to load Razorpay script");
+      setRazorpayLoaded(false);
+      setMessageContent({
+        title: "PAYMENT ERROR",
+        body: "Failed to load payment system. Please refresh the page or try again later.",
+        isError: true,
+      });
+      setShowMessage(true);
+    };
+
     document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   const handleCHANGE = (e) => {
@@ -48,11 +76,36 @@ const Form = () => {
 
   const handleFORM = async (e) => {
     e.preventDefault();
+    setMessageContent({
+      title: "IMPORTANT",
+      body: "After payment, you'll be redirected to the website. The ebook link will be there—just wait a few seconds.",
+      isError: false,
+    });
     setShowMessage(true);
   };
 
   const handlePAYMENT = async () => {
     setShowMessage(false);
+
+    if (!razorpayLoaded) {
+      setMessageContent({
+        title: "PAYMENT ERROR",
+        body: "Payment system is still loading. Please wait a moment and try again.",
+        isError: true,
+      });
+      setShowMessage(true);
+      return;
+    }
+
+    if (!window.Razorpay) {
+      setMessageContent({
+        title: "PAYMENT ERROR",
+        body: "Payment system not available. Please refresh the page or try again later.",
+        isError: true,
+      });
+      setShowMessage(true);
+      return;
+    }
 
     try {
       const options = {
@@ -93,6 +146,12 @@ const Form = () => {
       razorpay.open();
     } catch (error) {
       console.error("Error initiating payment:", error);
+      setMessageContent({
+        title: "PAYMENT ERROR",
+        body: "Failed to initiate payment. Please check your details and try again.",
+        isError: true,
+      });
+      setShowMessage(true);
     }
   };
 
@@ -246,27 +305,48 @@ const Form = () => {
         </button>
         {showMessage && (
           <div className="w-screen h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex items-center justify-center top-0 left-0 fixed font-[SPACEGROTESK] text-white bg-black/60">
-            <div className="w-full p-6 flex gap-4 flex-col rounded bg-zinc-800">
+            <div
+              className={`w-full p-6 flex gap-4 flex-col rounded ${
+                messageContent.isError ? "bg-red-900" : "bg-zinc-800"
+              }`}
+            >
               <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
-                IMPORTANT
+                {messageContent.title}
               </h2>
               <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
-                After payment, you'll be redirected to the website. The ebook
-                link will be there—just wait a few seconds.
+                {messageContent.body}
               </p>
-              <button
-                type="button"
-                className="w-full mt-2 p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
-                onClick={handlePAYMENT}
-              >
-                Get the Ebook at{" "}
-                <span className="font-semibold font-[SPACEGROTESK]">
-                  ₹{EBOOK_PRICE}
-                </span>{" "}
-                <span className="font-semibold line-through font-[SPACEGROTESK]">
-                  ₹499
-                </span>
-              </button>
+              {!messageContent.isError ? (
+                <button
+                  type="button"
+                  className="w-full mt-2 p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
+                  onClick={handlePAYMENT}
+                >
+                  Get the Ebook at{" "}
+                  <span
+                    className={`${
+                      EBOOK_PRICE == 499 ? "hidden" : ""
+                    } font-semibold font-[SPACEGROTESK]`}
+                  >
+                    ₹{EBOOK_PRICE}
+                  </span>{" "}
+                  <span
+                    className={`font-semibold ${
+                      EBOOK_PRICE == 499 ? "" : "line-through"
+                    } font-[SPACEGROTESK]`}
+                  >
+                    ₹499
+                  </span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="w-full mt-2 p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
+                  onClick={() => setShowMessage(false)}
+                >
+                  TRY AGAIN
+                </button>
+              )}
             </div>
           </div>
         )}

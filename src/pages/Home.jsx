@@ -1,13 +1,15 @@
-import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 import EBOOK_DATA from "../ebookData";
 
 // Icons
 import { Mail } from "lucide-react";
 import { BookOpenText } from "lucide-react";
+import { BadgePercent } from "lucide-react";
 
 // Components
 import FAQs from "../components/FAQs";
@@ -22,10 +24,31 @@ const Home = () => {
   const inviteLink =
     location.state?.inviteLink || localStorage.getItem("inviteLink") || "";
 
+  const EBOOK_DEAL_VERSION = "v1";
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
 
   const [EXPANDED, SET_EXPANDED] = useState(false);
+
+  useEffect(() => {
+    const storedVersion = localStorage.getItem("ebookDealVersion");
+    const storedCountdown = localStorage.getItem("countdownEnd");
+    const storedEbookCount = localStorage.getItem("ebookCount");
+
+    if (storedVersion !== EBOOK_DEAL_VERSION || !storedCountdown) {
+      // Reset timer
+      localStorage.setItem("countdownEnd", EBOOK_DEAL_COUNT);
+      localStorage.setItem("ebookDealVersion", EBOOK_DEAL_VERSION);
+
+      // Reset ebook count with a new random value
+      const newEbookCount = Math.floor(Math.random() * 20) + 225;
+      localStorage.setItem("ebookCount", newEbookCount.toString());
+      setEbookCount(newEbookCount);
+
+      // Reset last decrease time
+      localStorage.setItem("lastDecreaseTime", Date.now().toString());
+    }
+  }, [EBOOK_DEAL_COUNT, EBOOK_DEAL_VERSION]);
 
   useEffect(() => {
     const showTimer = setTimeout(() => {
@@ -40,6 +63,71 @@ const Home = () => {
       clearTimeout(showTimer);
       clearTimeout(hideTimer);
     };
+  }, []);
+
+  const toggleShortcut = () => {
+    SET_EXPANDED(true);
+    setTimeout(() => {
+      SET_EXPANDED(false);
+    }, 3000);
+  };
+
+  const MIN_EBOOKS = 0;
+
+  const [ebookCount, setEbookCount] = useState(() => {
+    const saved = localStorage.getItem("ebookCount");
+    return saved ? parseInt(saved) : Math.floor(Math.random() * 20) + 225;
+  });
+
+  useEffect(() => {
+    // Initialize ebookCount in localStorage if not present
+    if (!localStorage.getItem("ebookCount")) {
+      const initialCount = Math.floor(Math.random() * 20) + 225;
+      localStorage.setItem("ebookCount", initialCount.toString());
+      setEbookCount(initialCount);
+    }
+
+    const now = Date.now();
+    const savedCount =
+      parseInt(localStorage.getItem("ebookCount")) || ebookCount;
+    const lastUpdate =
+      parseInt(localStorage.getItem("lastDecreaseTime")) || now;
+
+    const hoursPassed = (now - lastUpdate) / (1000);
+
+    let newCount = savedCount;
+
+    if (hoursPassed >= 1) {
+      const decreaseBy = Math.floor(Math.random() * 10) + 1;
+      newCount = Math.max(savedCount - decreaseBy, MIN_EBOOKS);
+      localStorage.setItem("ebookCount", newCount.toString());
+      localStorage.setItem("lastDecreaseTime", now.toString());
+    }
+
+    setEbookCount(newCount);
+
+    const decreaseCount = () => {
+      setEbookCount((prevCount) => {
+        if (prevCount <= MIN_EBOOKS) return prevCount;
+
+        const newCount = prevCount - 1;
+        localStorage.setItem("ebookCount", newCount.toString());
+        localStorage.setItem("lastDecreaseTime", Date.now().toString());
+        return newCount;
+      });
+    };
+
+    const interval = setInterval(() => {
+      const randomTime = Math.floor(Math.random() * 15000) + 5000;
+
+      const timeout = setTimeout(() => {
+        decreaseCount();
+      }, randomTime);
+
+      return () => clearTimeout(timeout);
+    }, 20000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const GET_TIME_REMAINING = (endTime) => {
@@ -59,8 +147,52 @@ const Home = () => {
     }
   }, [EBOOK_DEAL_COUNT]);
 
+  useEffect(() => {
+    const now = Date.now();
+    const savedCount =
+      parseInt(localStorage.getItem("ebookCount")) || ebookCount;
+    const lastUpdate =
+      parseInt(localStorage.getItem("lastDecreaseTime")) || now;
+
+    const hoursPassed = (now - lastUpdate) / (1000 * 60 * 60);
+
+    let newCount = savedCount;
+
+    if (hoursPassed >= 1) {
+      const decreaseBy = Math.floor(Math.random() * 10) + 1;
+      newCount = Math.max(savedCount - decreaseBy, MIN_EBOOKS);
+      localStorage.setItem("ebookCount", newCount.toString());
+      localStorage.setItem("lastDecreaseTime", now.toString());
+    }
+
+    setEbookCount(newCount);
+
+    const decreaseCount = () => {
+      setEbookCount((prevCount) => {
+        if (prevCount <= MIN_EBOOKS) return prevCount;
+
+        const newCount = prevCount - 1;
+        localStorage.setItem("ebookCount", newCount.toString());
+        localStorage.setItem("lastDecreaseTime", Date.now().toString());
+        return newCount;
+      });
+    };
+
+    const interval = setInterval(() => {
+      const randomTime = Math.floor(Math.random() * 15000) + 5000;
+
+      const timeout = setTimeout(() => {
+        decreaseCount();
+      }, randomTime);
+
+      return () => clearTimeout(timeout);
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const [TIME_LEFT, SET_TIME_LEFT] = useState(
-    GET_TIME_REMAINING(localStorage.getItem("countdownEnd") || EBOOK_PRICE)
+    GET_TIME_REMAINING(localStorage.getItem("countdownEnd") || EBOOK_DEAL_COUNT)
   );
 
   useEffect(() => {
@@ -69,6 +201,9 @@ const Home = () => {
         localStorage.getItem("countdownEnd")
       );
       if (NEW_TIME_LEFT.TOTAL <= 0) {
+        // When timer reaches 0, set ebookCount to 0
+        setEbookCount(0);
+        localStorage.setItem("ebookCount", "0");
         clearInterval(INTERVAL);
       }
       SET_TIME_LEFT(NEW_TIME_LEFT);
@@ -84,18 +219,24 @@ const Home = () => {
     { label: "SEC", value: TIME_LEFT.SECONDS },
   ];
 
+  // Determine if offer is expired (either countdown ended or ebooks sold out)
+  const isOfferExpired = ebookCount <= 0 || TIME_LEFT.TOTAL <= 0;
+
   return (
     <div className="w-full h-full relative font-[SPACEGROTESK] text-white bg-black">
-      {/* EBOOK ACCESS */}
+      {/* SHORTCUT */}
       {inviteLink ? (
         <Link to="/thanks">
-          <div className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden">
+          <div
+            onClick={toggleShortcut}
+            className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden"
+          >
             <BookOpenText size="28px" />
             <span
               className={`text-lg font-medium whitespace-nowrap transform transition-all duration-1000 ease-in-out 
           ${
             EXPANDED
-              ? "opacity-100 translate-x-0 max-w-xs ml-3"
+              ? "opacity-100 translate-x-0 max-w-xs ml-2"
               : "opacity-0 -translate-x-2 max-w-0 overflow-hidden"
           }
         `}
@@ -105,7 +246,25 @@ const Home = () => {
           </div>
         </Link>
       ) : (
-        ""
+        <div
+          onClick={toggleShortcut}
+          className="p-4 fixed bottom-6 right-6 xl:bottom-12 xl:right-12 bg-[#E30A03] rounded-full flex items-center transition-all duration-1000 ease-in-out overflow-hidden"
+        >
+          <BadgePercent size="28px" />
+          <span
+            className={`text-lg font-medium whitespace-nowrap transform transition-all duration-1000 ease-in-out 
+          ${
+            EXPANDED
+              ? "opacity-100 translate-x-0 max-w-xs ml-2"
+              : "opacity-0 -translate-x-2 max-w-0 overflow-hidden"
+          }
+        `}
+          >
+            {!isOfferExpired
+              ? `Only ${ebookCount} ebooks left!`
+              : "Offer Expired"}
+          </span>
+        </div>
       )}
 
       {/* HERO */}
@@ -290,15 +449,17 @@ const Home = () => {
         <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
           GRAB THE <span className="text-[#E30A03]">DEAL</span>
         </h2>
+
         <div className="w-full p-6 flex gap-6 flex-col items-center rounded bg-[#1A1A1A]">
           <figure>
             <img
               src={EbookCover}
-              alt="Course preview image showcasing transformation from addiction to self-control"
-              className="w-full rounded"
+              alt="ebook"
+              className="w-full"
               loading="lazy"
             />
           </figure>
+
           <div className="w-full flex gap-6 items-center justify-evenly">
             {EBOOK_CTA.map((cta, index) => (
               <div
@@ -306,23 +467,52 @@ const Home = () => {
                 className="w-full text-2xl lg:text-3xl leading-tight lowercase flex gap-6 flex-col items-center"
               >
                 <div className="w-full p-6 sm:p-8 px-0 text-center font-bold rounded text-[#1A1A1A] bg-white">
-                  {cta.value}
+                  {!isOfferExpired ? cta.value : "0"}
                 </div>
                 <h2 className="font-[DIRTYLINE]">{cta.label}</h2>
               </div>
             ))}
           </div>
-          <Link to="/form" className="w-full">
+
+          <Link
+            to="/form"
+            state={{ ebookPrice: isOfferExpired ? 499 : EBOOK_PRICE }}
+            className="w-full"
+          >
             <button className="w-full p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out">
               Get the Ebook at{" "}
-              <span className="font-semibold font-[SPACEGROTESK]">
+              <span
+                className={`${
+                  !isOfferExpired ? "" : "hidden"
+                } font-semibold font-[SPACEGROTESK]`}
+              >
                 ₹{EBOOK_PRICE}
               </span>{" "}
-              <span className="font-semibold line-through font-[SPACEGROTESK]">
+              <span
+                className={`font-semibold ${
+                  !isOfferExpired ? "line-through" : ""
+                } font-[SPACEGROTESK]`}
+              >
                 ₹499
               </span>
             </button>
           </Link>
+
+          <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center font-semibold">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={`${ebookCount}-${TIME_LEFT.TOTAL}`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {!isOfferExpired
+                  ? `Only ${ebookCount} ebooks Left — Hurry!`
+                  : "Offer Expired - Full Price Now!"}
+              </motion.span>
+            </AnimatePresence>
+          </p>
         </div>
       </section>
 
@@ -339,13 +529,9 @@ const Home = () => {
             loading="lazy"
           />
         </figure>
-        <a
-          href="./FREE_RESOURCE.zip"
-          className="w-full"
-          download="Free Resource"
-        >
+        <Link to="/free-resource" className="w-full">
           <Button content="TRY CHAPTER 1 FOR FREE" />
-        </a>
+        </Link>
       </section>
 
       {/* FOOTER */}

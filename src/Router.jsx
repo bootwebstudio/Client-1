@@ -10,6 +10,7 @@ import {
 import Home from "./pages/Home";
 import Form from "./pages/Form";
 import Thanks from "./pages/Thanks";
+import FreeResource from "./pages/FreeResource";
 import HelpSupport from "./pages/HelpSupport";
 import PrivacyPolicies from "./pages/PrivacyPolicies";
 import TermsConditions from "./pages/TermsConditions";
@@ -49,6 +50,7 @@ const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/form" element={<Form />} />
         <Route path="/thanks" element={<Thanks />} />
+        <Route path="/free-resource" element={<FreeResource />} />
         <Route path="/help-support" element={<HelpSupport />} />
         <Route path="/privacy-policies" element={<PrivacyPolicies />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
