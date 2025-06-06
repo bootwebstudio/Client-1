@@ -501,14 +501,14 @@ const Home = () => {
           <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center font-semibold">
             <AnimatePresence mode="wait">
               <motion.span
-                key={`${ebookCount}-${TIME_LEFT.TOTAL}`}
+                key={ebookCount}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.3 }}
               >
                 {!isOfferExpired
-                  ? `Only ${ebookCount} ebooks Left — Hurry!`
+                  ? `Only ${ebookCount} ebooks Left at this price — Hurry up!`
                   : "Offer Expired - Full Price Now!"}
               </motion.span>
             </AnimatePresence>
