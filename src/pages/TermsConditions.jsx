@@ -1,7 +1,9 @@
-import React from "react";
+import { useLocation } from "react-router-dom";
 
 const TermsConditions = () => {
-  const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
+  const location = useLocation();
+  const ebookPrice = location.state?.ebookPrice;
+  const EBOOK_PRICE = ebookPrice || import.meta.env.VITE_EBOOK_PRICE;
 
   return (
     <div className="w-full min-h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-80 flex flex-col gap-6 font-[SPACEGROTESK] text-white bg-black">
@@ -46,9 +48,13 @@ const TermsConditions = () => {
             <li className="mx-6 list-disc">
               The actual price of the ebook is ₹499.
             </li>
-            <li className="mx-6 list-disc">
-              Currently, we are offering a discounted price of ₹{EBOOK_PRICE}.
-            </li>
+            {ebookPrice ? (
+              ""
+            ) : (
+              <li className="mx-6 list-disc">
+                Currently, we are offering a discounted price of ₹{EBOOK_PRICE}.
+              </li>
+            )}
             <li className="mx-6 list-disc">
               Prices may change in the future based on promotions.
             </li>

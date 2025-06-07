@@ -472,7 +472,12 @@ const Home = () => {
             </h4>
             <Link to="/help-support">Help & Support</Link>
             <Link to="/privacy-policies">Privacy Policies</Link>
-            <Link to="/terms-conditions">Terms & Conditions</Link>
+            <Link
+              to="/terms-conditions"
+              state={{ ebookPrice: isOfferExpired ? 499 : EBOOK_PRICE }}
+            >
+              Terms & Conditions
+            </Link>
             <Link to="/refund-policy">Refund Policy</Link>
             <Link to="/shipping-policy">Shipping Policy</Link>
           </div>
