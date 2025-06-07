@@ -27,109 +27,15 @@ const Home = () => {
   const EBOOK_DEAL_VERSION = "v1";
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
-
-  const [EXPANDED, SET_EXPANDED] = useState(false);
-
-  useEffect(() => {
-    const storedVersion = localStorage.getItem("ebookDealVersion");
-    const storedCountdown = localStorage.getItem("countdownEnd");
-    const storedEbookCount = localStorage.getItem("ebookCount");
-
-    if (storedVersion !== EBOOK_DEAL_VERSION || !storedCountdown) {
-      // Reset timer
-      localStorage.setItem("countdownEnd", EBOOK_DEAL_COUNT);
-      localStorage.setItem("ebookDealVersion", EBOOK_DEAL_VERSION);
-
-      // Reset ebook count with a new random value
-      const newEbookCount = Math.floor(Math.random() * 20) + 225;
-      localStorage.setItem("ebookCount", newEbookCount.toString());
-      setEbookCount(newEbookCount);
-
-      // Reset last decrease time
-      localStorage.setItem("lastDecreaseTime", Date.now().toString());
-    }
-  }, [EBOOK_DEAL_COUNT, EBOOK_DEAL_VERSION]);
-
-  useEffect(() => {
-    const showTimer = setTimeout(() => {
-      SET_EXPANDED(true);
-    }, 5000);
-
-    const hideTimer = setTimeout(() => {
-      SET_EXPANDED(false);
-    }, 8000);
-
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
-    };
-  }, []);
-
-  const toggleShortcut = () => {
-    SET_EXPANDED(true);
-    setTimeout(() => {
-      SET_EXPANDED(false);
-    }, 3000);
-  };
-
   const MIN_EBOOKS = 0;
 
+  const [EXPANDED, SET_EXPANDED] = useState(false);
   const [ebookCount, setEbookCount] = useState(() => {
     const saved = localStorage.getItem("ebookCount");
     return saved ? parseInt(saved) : Math.floor(Math.random() * 20) + 225;
   });
 
-  useEffect(() => {
-    // Initialize ebookCount in localStorage if not present
-    if (!localStorage.getItem("ebookCount")) {
-      const initialCount = Math.floor(Math.random() * 20) + 225;
-      localStorage.setItem("ebookCount", initialCount.toString());
-      setEbookCount(initialCount);
-    }
-
-    const now = Date.now();
-    const savedCount =
-      parseInt(localStorage.getItem("ebookCount")) || ebookCount;
-    const lastUpdate =
-      parseInt(localStorage.getItem("lastDecreaseTime")) || now;
-
-    const hoursPassed = (now - lastUpdate) / (1000 * 60 * 60);
-
-    let newCount = savedCount;
-
-    if (hoursPassed >= 1) {
-      const decreaseBy = Math.floor(Math.random() * 5) + 1;
-      newCount = Math.max(savedCount - decreaseBy, MIN_EBOOKS);
-      localStorage.setItem("ebookCount", newCount.toString());
-      localStorage.setItem("lastDecreaseTime", now.toString());
-    }
-
-    setEbookCount(newCount);
-
-    const decreaseCount = () => {
-      setEbookCount((prevCount) => {
-        if (prevCount <= MIN_EBOOKS) return prevCount;
-
-        const newCount = prevCount - 1;
-        localStorage.setItem("ebookCount", newCount.toString());
-        localStorage.setItem("lastDecreaseTime", Date.now().toString());
-        return newCount;
-      });
-    };
-
-    const interval = setInterval(() => {
-      const randomTime = Math.floor(Math.random() * 15000) + 5000;
-
-      const timeout = setTimeout(() => {
-        decreaseCount();
-      }, randomTime);
-
-      return () => clearTimeout(timeout);
-    }, 20000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+  // Countdown calculation
   const GET_TIME_REMAINING = (endTime) => {
     const TOTAL = Date.parse(endTime) - Date.now();
     const SECONDS = Math.floor((TOTAL / 1000) % 60);
@@ -139,15 +45,24 @@ const Home = () => {
     return { TOTAL, DAYS, HOURS, MINUTES, SECONDS };
   };
 
-  useEffect(() => {
-    const COUNTDOWN = localStorage.getItem("countdownEnd");
+  const [TIME_LEFT, SET_TIME_LEFT] = useState(
+    GET_TIME_REMAINING(localStorage.getItem("countdownEnd") || EBOOK_DEAL_COUNT)
+  );
 
-    if (COUNTDOWN !== EBOOK_DEAL_COUNT) {
+  // Initialize or update ebook deal version & countdown and count
+  useEffect(() => {
+    const storedVersion = localStorage.getItem("ebookDealVersion");
+    const storedCountdown = localStorage.getItem("countdownEnd");
+
+    if (storedVersion !== EBOOK_DEAL_VERSION || !storedCountdown) {
+      const newCount = Math.floor(Math.random() * 20) + 225;
+      localStorage.setItem("ebookCount", newCount.toString());
       localStorage.setItem("countdownEnd", EBOOK_DEAL_COUNT);
+      localStorage.setItem("ebookDealVersion", EBOOK_DEAL_VERSION);
+      localStorage.setItem("lastDecreaseTime", Date.now().toString());
+      setEbookCount(newCount);
     }
-  }, [EBOOK_DEAL_COUNT]);
 
-  useEffect(() => {
     const now = Date.now();
     const savedCount =
       parseInt(localStorage.getItem("ebookCount")) || ebookCount;
@@ -155,7 +70,6 @@ const Home = () => {
       parseInt(localStorage.getItem("lastDecreaseTime")) || now;
 
     const hoursPassed = (now - lastUpdate) / (1000 * 60 * 60);
-
     let newCount = savedCount;
 
     if (hoursPassed >= 1) {
@@ -163,45 +77,30 @@ const Home = () => {
       newCount = Math.max(savedCount - decreaseBy, MIN_EBOOKS);
       localStorage.setItem("ebookCount", newCount.toString());
       localStorage.setItem("lastDecreaseTime", now.toString());
+      setEbookCount(newCount);
     }
 
-    setEbookCount(newCount);
-
-    const decreaseCount = () => {
+    // Auto-decrease ebook count every 5–15 seconds while user is on page
+    const interval = setInterval(() => {
       setEbookCount((prevCount) => {
         if (prevCount <= MIN_EBOOKS) return prevCount;
-
         const newCount = prevCount - 1;
         localStorage.setItem("ebookCount", newCount.toString());
         localStorage.setItem("lastDecreaseTime", Date.now().toString());
         return newCount;
       });
-    };
-
-    const interval = setInterval(() => {
-      const randomTime = Math.floor(Math.random() * 5000) + 5000;
-
-      const timeout = setTimeout(() => {
-        decreaseCount();
-      }, randomTime);
-
-      return () => clearTimeout(timeout);
-    }, 20000);
+    }, Math.floor(Math.random() * 10000) + 5000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const [TIME_LEFT, SET_TIME_LEFT] = useState(
-    GET_TIME_REMAINING(localStorage.getItem("countdownEnd") || EBOOK_DEAL_COUNT)
-  );
-
+  // Countdown timer update every second
   useEffect(() => {
     const INTERVAL = setInterval(() => {
       const NEW_TIME_LEFT = GET_TIME_REMAINING(
         localStorage.getItem("countdownEnd")
       );
       if (NEW_TIME_LEFT.TOTAL <= 0) {
-        // When timer reaches 0, set ebookCount to 0
         setEbookCount(0);
         localStorage.setItem("ebookCount", "0");
         clearInterval(INTERVAL);
@@ -212,6 +111,21 @@ const Home = () => {
     return () => clearInterval(INTERVAL);
   }, []);
 
+  // Shortcut expansion
+  useEffect(() => {
+    const showTimer = setTimeout(() => SET_EXPANDED(true), 5000);
+    const hideTimer = setTimeout(() => SET_EXPANDED(false), 8000);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, []);
+
+  const toggleShortcut = () => {
+    SET_EXPANDED(true);
+    setTimeout(() => SET_EXPANDED(false), 3000);
+  };
+
   const EBOOK_CTA = [
     { label: "DAY", value: TIME_LEFT.DAYS },
     { label: "HOUR", value: TIME_LEFT.HOURS },
@@ -219,7 +133,6 @@ const Home = () => {
     { label: "SEC", value: TIME_LEFT.SECONDS },
   ];
 
-  // Determine if offer is expired (either countdown ended or ebooks sold out)
   const isOfferExpired = ebookCount <= 0 || TIME_LEFT.TOTAL <= 0;
 
   return (
