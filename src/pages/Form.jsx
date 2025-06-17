@@ -14,7 +14,6 @@ import CoursePreview from "../assets/CoursePreview.png";
 
 const Form = () => {
   const location = useLocation();
-  const ebookPrice = location.state?.ebookPrice;
   const [showMessage, setShowMessage] = useState(false);
   const [messageContent, setMessageContent] = useState({
     title: "IMPORTANT",
@@ -23,7 +22,7 @@ const Form = () => {
   });
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
-  const EBOOK_PRICE = ebookPrice || import.meta.env.VITE_EBOOK_PRICE;
+  const EBOOK_PRICE = location.state?.ebookPrice ?? 499;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
   const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_DATABASE_CHAT_ID = import.meta.env
@@ -325,14 +324,14 @@ const Form = () => {
                   Get the Ebook at{" "}
                   <span
                     className={`${
-                      EBOOK_PRICE == 499 ? "hidden" : ""
+                      EBOOK_PRICE === 499 ? "hidden" : ""
                     } font-semibold font-[SPACEGROTESK]`}
                   >
                     ₹{EBOOK_PRICE}
                   </span>{" "}
                   <span
                     className={`font-semibold ${
-                      EBOOK_PRICE == 499 ? "" : "line-through"
+                      EBOOK_PRICE === 499 ? "" : "line-through"
                     } font-[SPACEGROTESK]`}
                   >
                     ₹499

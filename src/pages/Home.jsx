@@ -24,7 +24,7 @@ const Home = () => {
   const inviteLink =
     location.state?.inviteLink || localStorage.getItem("inviteLink") || "";
 
-  const EBOOK_DEAL_VERSION = "v1";
+  const EBOOK_DEAL_VERSION = "v1.0";
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
   const MIN_EBOOKS = 0;
@@ -203,7 +203,11 @@ const Home = () => {
         <p className="text-lg lg:text-xl leading-tight lg:leading-normal text-center">
           No more urges. No more guilt. Just a clear, focused, and powerful YOU.
         </p>
-        <Link to="/form" className="w-full">
+        <Link
+          to="/form"
+          state={{ ebookPrice: isOfferExpired ? 499 : EBOOK_PRICE }}
+          className="w-full"
+        >
           <Button content="GET THE EBOOK NOW" />
         </Link>
       </section>
@@ -293,7 +297,11 @@ const Home = () => {
                 </li>
               ))}
             </ul>
-            <Link to="/form" className="w-full">
+            <Link
+              to="/form"
+              state={{ ebookPrice: isOfferExpired ? 499 : EBOOK_PRICE }}
+              className="w-full"
+            >
               <Button content="Grab the ultimate guide" />
             </Link>
           </div>
