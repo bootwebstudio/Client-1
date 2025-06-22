@@ -24,7 +24,7 @@ const Home = () => {
   const inviteLink =
     location.state?.inviteLink || localStorage.getItem("inviteLink") || "";
 
-  const EBOOK_DEAL_VERSION = "v1.0";
+  const EBOOK_DEAL_VERSION = "v1.1";
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
   const MIN_EBOOKS = 0;
@@ -32,7 +32,7 @@ const Home = () => {
   const [EXPANDED, SET_EXPANDED] = useState(false);
   const [ebookCount, setEbookCount] = useState(() => {
     const saved = localStorage.getItem("ebookCount");
-    return saved ? parseInt(saved) : Math.floor(Math.random() * 20) + 225;
+    return saved ? parseInt(saved) : Math.floor(Math.random() * 20) + 475;
   });
 
   // Countdown calculation
@@ -55,7 +55,7 @@ const Home = () => {
     const storedCountdown = localStorage.getItem("countdownEnd");
 
     if (storedVersion !== EBOOK_DEAL_VERSION || !storedCountdown) {
-      const newCount = Math.floor(Math.random() * 20) + 225;
+      const newCount = Math.floor(Math.random() * 20) + 475;
       localStorage.setItem("ebookCount", newCount.toString());
       localStorage.setItem("countdownEnd", EBOOK_DEAL_COUNT);
       localStorage.setItem("ebookDealVersion", EBOOK_DEAL_VERSION);
