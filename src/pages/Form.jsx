@@ -24,12 +24,6 @@ const Form = () => {
 
   const EBOOK_PRICE = location.state?.ebookPrice ?? 499;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
-  const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-  const TELEGRAM_DATABASE_CHAT_ID = import.meta.env
-    .VITE_TELEGRAM_DATABASE_CHAT_ID;
-  const TELEGRAM_INVITE_LINK_CHAT_ID = import.meta.env
-    .VITE_TELEGRAM_INVITE_LINK_CHAT_ID;
-  const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -96,127 +90,104 @@ const Form = () => {
       return;
     }
 
-    if (!window.Razorpay) {
-      setMessageContent({
-        title: "PAYMENT ERROR",
-        body: "Payment system not available. Please refresh the page or try again later.",
-        isError: true,
-      });
-      setShowMessage(true);
-      return;
-    }
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: EBOOK_PRICE * 100,
+      currency: "INR",
+      name: "YOUTH PHILOSOPHY",
+      description: "Your Favorite Poison Ebook",
+      image: BrandLogo,
+      handler: async function (response) {
+        try {
+          const { razorpay_payment_id } = response;
 
-    try {
-      const options = {
-        key: RAZORPAY_KEY,
-        amount: EBOOK_PRICE * 100,
-        currency: "INR",
-        capture: "automatic",
-        capture_options: {
-          automatic_expiry_period: 12,
-          manual_expiry_period: 7200,
-          refund_speed: "optimum",
-        },
-        name: "YOUTH PHILOSOPHY",
-        description: "Your Favorite Poison Ebook",
-        image: BrandLogo,
-        handler: async (response) => {
-          await sendUSERDATA(response);
-          const inviteLink = await generateINVITELINK();
-          if (inviteLink) {
-            localStorage.setItem("inviteLink", inviteLink);
-            navigate("/thanks", { state: { inviteLink } });
-            setTimeout(() => {
-              sendEmail(inviteLink, response.razorpay_payment_id);
-            }, 1000);
+          // Step 1: Send user data to Telegram via backend
+          await axios.post(
+            "https://youthphilosophy.vercel.app/api/sendUserData",
+            {
+              ...formData,
+              paymentId: razorpay_payment_id,
+            }
+          );
+
+          // Step 2: Generate invite link
+          const linkRes = await axios.post(
+            "https://youthphilosophy.vercel.app/api/generateInviteLink"
+          );
+          const inviteLink = linkRes.data.inviteLink;
+
+          if (!inviteLink) {
+            throw new Error("Failed to generate invite link");
           }
-        },
-        prefill: {
-          name: formData.name,
-          email: formData.email,
-          contact: formData.phone,
-        },
-        theme: {
-          color: "#E30A03",
-        },
-      };
 
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error("Error initiating payment:", error);
-      setMessageContent({
-        title: "PAYMENT ERROR",
-        body: "Failed to initiate payment. Please check your details and try again.",
-        isError: true,
-      });
-      setShowMessage(true);
-    }
+          // Step 3: Store + navigate to thank you
+          localStorage.setItem("inviteLink", inviteLink);
+          navigate("/thanks", { state: { inviteLink } });
+
+          // Step 4: Send email with access link
+          await axios.post("https://youthphilosophy.vercel.app/api/sendEmail", {
+            name: formData.name,
+            email: formData.email,
+            inviteLink,
+            paymentId: razorpay_payment_id,
+          });
+        } catch (err) {
+          console.error("Post-payment error:", err.message);
+          setMessageContent({
+            title: "Something Went Wrong",
+            body: "Payment was successful, but we failed to process your access. Please contact support or try again.",
+            isError: true,
+          });
+          setShowMessage(true);
+        }
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+        contact: formData.phone,
+      },
+      theme: {
+        color: "#E30A03",
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
   };
 
   const sendUSERDATA = async (paymentDetails) => {
     try {
-      const messageContent = `📩 New User Data:\n👤 Name: ${formData.name}\n📧 Email: ${formData.email}\n📞 Phone: ${formData.phone}\n🎂 Age: ${formData.age}\n📢 Referral: ${formData.referral}\n💳 Payment ID: ${paymentDetails.razorpay_payment_id}`;
-
-      await axios.post(
-        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-        {
-          chat_id: TELEGRAM_DATABASE_CHAT_ID,
-          text: messageContent,
-        }
-      );
+      await axios.post("https://youthphilosophy.vercel.app/api/sendUserData", {
+        ...formData,
+        paymentId: paymentDetails.razorpay_payment_id,
+      });
     } catch (error) {
-      console.error("Error sending user data to Telegram:", error);
+      console.error("Error sending user data to backend:", error.message);
     }
   };
 
   const generateINVITELINK = async () => {
     try {
       const response = await axios.post(
-        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/createChatInviteLink`,
-        {
-          chat_id: TELEGRAM_INVITE_LINK_CHAT_ID,
-          expire_date: Math.floor(Date.now() / 1000) + 86400,
-          member_limit: 1,
-        }
+        "https://youthphilosophy.vercel.app/api/generateInviteLink"
       );
-      return response.data.result?.invite_link || null;
+      return response.data.inviteLink;
     } catch (error) {
-      console.error("Error generating invite link:", error);
+      console.error("Error generating invite link:", error.message);
       return null;
     }
   };
 
   const sendEmail = async (inviteLink, paymentId) => {
     try {
-      await axios.post(
-        "https://api.brevo.com/v3/smtp/email",
-        {
-          sender: {
-            email: "youthphilosophy544@gmail.com",
-            name: "YOUTH PHILOSOPHY",
-          },
-          to: [{ email: formData.email, name: formData.name }],
-          subject: `Your Favorite Poison Ebook for ${formData.name}!`,
-          htmlContent: `
-          <p><strong>Hello ${formData.name},</strong></p>
-          <p>Welcome to a life-changing experience! 🚀 You've successfully purchased, and your journey starts now.</p>
-          <p>Here's your exclusive ebook access:</p>
-          <p><a href="${inviteLink}">Download Now</a></p>
-          <p>Payment ID: <strong>${paymentId}</strong></p>
-          <p>If you face any issues, we're here to help! Just reach out, and we'll make it right.</p>
-          <p>Best regards,<br><strong>Youth Philosophy</strong></p>
-        `,
-        },
-        {
-          headers: {
-            "api-key": BREVO_API_KEY,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.post("https://youthphilosophy.vercel.app/api/sendEmail", {
+        name: formData.name,
+        email: formData.email,
+        inviteLink,
+        paymentId,
+      });
     } catch (error) {
-      console.error("Error sending email:", error);
+      console.error("Error sending email:", error.message);
     }
   };
 
