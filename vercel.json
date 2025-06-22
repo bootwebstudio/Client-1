@@ -1,3 +1,11 @@
-git add .
-git commit -m "Setup frontend + API for Vercel"
-git push
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/*.js", "use": "@vercel/node" },
+    { "src": "dist/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1.js" },
+    { "src": "/(.*)", "dest": "/dist/index.html" }
+  ]
+}
