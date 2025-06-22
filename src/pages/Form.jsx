@@ -25,6 +25,8 @@ const Form = () => {
   const EBOOK_PRICE = location.state?.ebookPrice ?? 499;
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
 
+  console.log("Razorpay Key:", RAZORPAY_KEY);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
