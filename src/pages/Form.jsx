@@ -103,7 +103,7 @@ const Form = () => {
 
           // Step 1: Send user data to Telegram via backend
           await axios.post(
-            "https://youthphilosophy.vercel.app/api/sendUserData",
+            "httpsz://youthphilosophy.vercel.app/api/sendUserData",
             {
               ...formData,
               paymentId: razorpay_payment_id,
@@ -112,7 +112,7 @@ const Form = () => {
 
           // Step 2: Generate invite link
           const linkRes = await axios.post(
-            "https://youthphilosophy.vercel.app/api/generateInviteLink"
+            "httpsz://youthphilosophy.vercel.app/api/generateInviteLink"
           );
           const inviteLink = linkRes.data.inviteLink;
 
@@ -125,7 +125,7 @@ const Form = () => {
           navigate("/thanks", { state: { inviteLink } });
 
           // Step 4: Send email with access link
-          await axios.post("https://youthphilosophy.vercel.app/api/sendEmail", {
+          await axios.post("httpsz://youthphilosophy.vercel.app/api/sendEmail", {
             name: formData.name,
             email: formData.email,
             inviteLink,
@@ -153,42 +153,6 @@ const Form = () => {
 
     const razorpay = new window.Razorpay(options);
     razorpay.open();
-  };
-
-  const sendUSERDATA = async (paymentDetails) => {
-    try {
-      await axios.post("https://youthphilosophy.vercel.app/api/sendUserData", {
-        ...formData,
-        paymentId: paymentDetails.razorpay_payment_id,
-      });
-    } catch (error) {
-      console.error("Error sending user data to backend:", error.message);
-    }
-  };
-
-  const generateINVITELINK = async () => {
-    try {
-      const response = await axios.post(
-        "https://youthphilosophy.vercel.app/api/generateInviteLink"
-      );
-      return response.data.inviteLink;
-    } catch (error) {
-      console.error("Error generating invite link:", error.message);
-      return null;
-    }
-  };
-
-  const sendEmail = async (inviteLink, paymentId) => {
-    try {
-      await axios.post("https://youthphilosophy.vercel.app/api/sendEmail", {
-        name: formData.name,
-        email: formData.email,
-        inviteLink,
-        paymentId,
-      });
-    } catch (error) {
-      console.error("Error sending email:", error.message);
-    }
   };
 
   return (
