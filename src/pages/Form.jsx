@@ -69,12 +69,6 @@ const Form = () => {
 
   const handleFORM = async (e) => {
     e.preventDefault();
-    setMessageContent({
-      title: "IMPORTANT",
-      body: "After payment, you'll be redirected to the website. The ebook link will be there—just wait a few seconds.",
-      isError: false,
-    });
-    setShowMessage(true);
   };
 
   const handlePAYMENT = async () => {
@@ -98,12 +92,19 @@ const Form = () => {
       description: "Your Favorite Poison Ebook",
       image: BrandLogo,
       handler: async function (response) {
+        setMessageContent({
+          title: "Attention",
+          body: "Please just wait a few seconds to get your ebook access link.",
+          isError: false,
+        });
+        setShowMessage(true);
+
         try {
           const { razorpay_payment_id } = response;
 
           // Step 1: Send user data to Telegram via backend
           await axios.post(
-            "httpsz://youthphilosophy.vercel.app/api/sendUserData",
+            "https://youthphilosophy.vercel.app/api/sendUserData",
             {
               ...formData,
               paymentId: razorpay_payment_id,
@@ -112,7 +113,7 @@ const Form = () => {
 
           // Step 2: Generate invite link
           const linkRes = await axios.post(
-            "httpsz://youthphilosophy.vercel.app/api/generateInviteLink"
+            "https://youthphilosophy.vercel.app/api/generateInviteLink"
           );
           const inviteLink = linkRes.data.inviteLink;
 
@@ -125,7 +126,7 @@ const Form = () => {
           navigate("/thanks", { state: { inviteLink } });
 
           // Step 4: Send email with access link
-          await axios.post("httpsz://youthphilosophy.vercel.app/api/sendEmail", {
+          await axios.post("https://youthphilosophy.vercel.app/api/sendEmail", {
             name: formData.name,
             email: formData.email,
             inviteLink,
@@ -134,8 +135,8 @@ const Form = () => {
         } catch (err) {
           console.error("Post-payment error:", err.message);
           setMessageContent({
-            title: "Something Went Wrong",
-            body: "Payment was successful, but we failed to process your access. Please contact support or try again.",
+            title: "Oops!",
+            body: "Payment was successful, but we failed to process your access. Please send us an email and you will get your ebook access link.",
             isError: true,
           });
           setShowMessage(true);
@@ -232,54 +233,35 @@ const Form = () => {
           }}
         />
         <button
-          type="submit"
+          onClick={handlePAYMENT}
           className="w-full p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
         >
           PROCEED TO PAYMENT
         </button>
         {showMessage && (
-          <div className="w-screen h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex items-center justify-center top-0 left-0 fixed font-[SPACEGROTESK] text-white bg-black/60">
-            <div
-              className={`w-full p-6 flex gap-4 flex-col rounded ${
-                messageContent.isError ? "bg-red-900" : "bg-zinc-800"
-              }`}
-            >
+          <div className="w-screen h-screen p-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-64 flex items-center justify-center top-0 left-0 fixed font-[SPACEGROTESK] text-white bg-black/80">
+            <div className="w-full p-6 flex gap-4 flex-col rounded bg-zinc-800">
               <h2 className="text-4xl lg:text-5xl leading-none lowercase text-center font-[DIRTYLINE]">
                 {messageContent.title}
               </h2>
               <p className="text-lg lg:text-xl leading-none lg:leading-normal text-center">
                 {messageContent.body}
               </p>
-              {!messageContent.isError ? (
-                <button
-                  type="button"
-                  className="w-full mt-2 p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
-                  onClick={handlePAYMENT}
-                >
-                  Get the Ebook at{" "}
-                  <span
-                    className={`${
-                      EBOOK_PRICE === 499 ? "hidden" : ""
-                    } font-semibold font-[SPACEGROTESK]`}
-                  >
-                    ₹{EBOOK_PRICE}
-                  </span>{" "}
-                  <span
-                    className={`font-semibold ${
-                      EBOOK_PRICE === 499 ? "" : "line-through"
-                    } font-[SPACEGROTESK]`}
-                  >
-                    ₹499
-                  </span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="w-full mt-2 p-4 text-lg lg:text-xl font-medium lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
+              {messageContent.isError ? (
+                <a
+                  href="mailto:youthphilosophy544@gmail.com"
+                  className="w-full mt-2 p-4 text-lg lg:text-xl font-medium text-center lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
                   onClick={() => setShowMessage(false)}
                 >
-                  TRY AGAIN
-                </button>
+                  CONTACT TO SUPPORT
+                </a>
+              ) : (
+                <a
+                  className="w-full mt-2 p-4 text-lg lg:text-xl font-medium text-center lowercase rounded font-[DIRTYLINE] bg-[#E30A03] hover:bg-[#620905] transition-all duration-400 ease-in-out"
+                  onClick={() => setShowMessage(false)}
+                >
+                  OKAY
+                </a>
               )}
             </div>
           </div>
