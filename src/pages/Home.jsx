@@ -24,7 +24,7 @@ const Home = () => {
   const inviteLink =
     location.state?.inviteLink || localStorage.getItem("inviteLink") || "";
 
-  const EBOOK_DEAL_VERSION = "v1.6";
+  const EBOOK_DEAL_VERSION = "v1.7";
   const EBOOK_PRICE = import.meta.env.VITE_EBOOK_PRICE;
   const EBOOK_DEAL_COUNT = import.meta.env.VITE_EBOOK_DEAL_COUNT;
   const MIN_EBOOKS = 0;
