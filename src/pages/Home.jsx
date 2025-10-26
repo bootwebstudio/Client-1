@@ -32,7 +32,7 @@ const Home = () => {
   const [EXPANDED, SET_EXPANDED] = useState(false);
   const [ebookCount, setEbookCount] = useState(() => {
     const saved = localStorage.getItem("ebookCount");
-    return saved ? parseInt(saved) : Math.floor(Math.random() * 20) + 475;
+    return saved ? parseInt(saved) : Math.floor(Math.random() * 20) + 100;
   });
 
   // Countdown calculation
@@ -55,7 +55,7 @@ const Home = () => {
     const storedCountdown = localStorage.getItem("countdownEnd");
 
     if (storedVersion !== EBOOK_DEAL_VERSION || !storedCountdown) {
-      const newCount = Math.floor(Math.random() * 20) + 475;
+      const newCount = Math.floor(Math.random() * 20) + 100;
       localStorage.setItem("ebookCount", newCount.toString());
       localStorage.setItem("countdownEnd", EBOOK_DEAL_COUNT);
       localStorage.setItem("ebookDealVersion", EBOOK_DEAL_VERSION);
